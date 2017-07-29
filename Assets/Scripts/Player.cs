@@ -8,10 +8,12 @@ public class Player : Entity {
     public float thrust;
     public Vector2 maxVelocity;
 
+    Transform leftWall, rightWall;
+
     private KeyCode abductKey = KeyCode.Space;
     
 
-    private AbductionBeam beam;
+    public AbductionBeam beam;
 
     private KeyCode? previousMovementKey = null;
 
@@ -19,6 +21,9 @@ public class Player : Entity {
     {
         rb = GetComponent<Rigidbody2D>();
         beam = transform.GetChild(0).GetComponent<AbductionBeam>();
+
+        rightWall = GameObject.FindGameObjectWithTag("RightWall").transform;
+        leftWall = GameObject.FindGameObjectWithTag("LeftWall").transform;
     }
 
     // Use this for initialization
@@ -31,6 +36,8 @@ public class Player : Entity {
 	// Update is called once per frame
 	void Update () {
 
+        transform.position = new Vector2(Mathf.Clamp(transform.position.x, leftWall.position.x + 2, rightWall.position.x - 2),transform.position.y);
+
         if (Input.GetKeyDown(abductKey) && rb.velocity == Vector2.zero && !beam.Abducting)
         {
             beam.Abduct();
@@ -40,8 +47,8 @@ public class Player : Entity {
             beam.StopAbduct();
         }
 
-        //DrainPowerOverTime();
-        print("Power: " + CurrentPower);
+        DrainPowerOverTime();
+        //print("Power: " + CurrentPower);
 	}
     private void FixedUpdate()
     {
@@ -127,20 +134,12 @@ public class Player : Entity {
     {
         return (Mathf.Abs(rb.velocity.x) > maxVelocity.x);
     }
+    
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(beam.Abducting && collision.GetComponent<Human>())
-        {
-            Human entity = collision.GetComponent<Human>();
-            IncreasePower(entity.MaxPower);
-            entity.Die();
-        }
-    }
-
-    void IncreasePower(float power)
+    public void IncreasePower(float power)
     {
         CurrentPower += power;
+        print("increasing power");
         if(CurrentPower > MaxPower)
         {
             float diff = CurrentPower - MaxPower;
@@ -153,6 +152,18 @@ public class Player : Entity {
         CurrentPower -= 0.5f * Time.deltaTime;
     }
 
-   
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponent<Missile>())
+        {
+            Missile missile = collision.GetComponent<Missile>();
+            print("hitting");
+            DealDamage(missile.damage);
+
+            Destroy(missile.gameObject);
+        }
+    }
+
+
 
 }

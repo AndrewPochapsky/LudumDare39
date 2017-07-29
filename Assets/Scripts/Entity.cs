@@ -17,5 +17,6 @@ public class Entity : MonoBehaviour{
     public virtual void DealDamage(float damage)
     {
         CurrentPower -= damage;
+        print("dealing damage");
     }
 }

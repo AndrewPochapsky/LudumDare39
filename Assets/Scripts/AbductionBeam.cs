@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AbductionBeam : MonoBehaviour {
 
-    private Entity target;
+    public Entity target;
 
     [SerializeField]
     private float abductionSpeed;
@@ -12,7 +12,7 @@ public class AbductionBeam : MonoBehaviour {
     private bool _abducting = false;
 
     private SpriteRenderer sp;
-    //private BoxCollider2D boxCol;
+    private BoxCollider2D boxCol;
 
     public bool Abducting {
         get
@@ -24,7 +24,7 @@ public class AbductionBeam : MonoBehaviour {
     private void Start()
     {
         sp = GetComponent<SpriteRenderer>();
-        //boxCol = GetComponent<BoxCollider2D>();
+        boxCol = GetComponent<BoxCollider2D>();
 
         sp.enabled = false;
         //boxCol.enabled = false;
@@ -32,8 +32,10 @@ public class AbductionBeam : MonoBehaviour {
 
     private void Update()
     {
-        if (target != null)
-            print("not null");
+        if (Abducting)
+        {
+            print("abducting");
+        }
     }
 
     public void Abduct()
@@ -48,10 +50,14 @@ public class AbductionBeam : MonoBehaviour {
             Rigidbody2D targetRb = target.GetComponent<Rigidbody2D>();
 
             //targetRb.AddForce(transform.up * abductionSpeed);
+            print("target not null and abducting");
+
             targetRb.isKinematic = true;
 
             targetRb.velocity = new Vector2(0, abductionSpeed);
             target.GettingAbducted = true;
+
+            //boxCol.enabled = false;
         }
        
 
@@ -66,19 +72,23 @@ public class AbductionBeam : MonoBehaviour {
         {
             Rigidbody2D targetRb = target.GetComponent<Rigidbody2D>();
 
+            print("stop abduct");
+
             //targetRb.AddForce(transform.up * abductionSpeed);
             targetRb.isKinematic = false;
 
             targetRb.velocity = Vector2.zero;
 
             target.GettingAbducted = false;
+           
         }
 
-
+        target = null;
         _abducting = false;
+        //boxCol.enabled = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         //print(collision.name);
 
@@ -87,7 +97,7 @@ public class AbductionBeam : MonoBehaviour {
             target = collision.GetComponent<Entity>();
         }
     }
-
+    /*
     private void OnTriggerExit2D(Collider2D collision)
     {
         //print(collision.name);
@@ -102,7 +112,7 @@ public class AbductionBeam : MonoBehaviour {
                 target = null;
             }
         }
-    }
+    }*/
 
 
 }
