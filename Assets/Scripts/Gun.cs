@@ -73,7 +73,7 @@ public class Gun : MonoBehaviour {
     private IEnumerator Fire(Entity target)
     {
         attacking = true;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         target.DealDamage(damage);
         StartCoroutine(Fire(target));
 

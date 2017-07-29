@@ -102,6 +102,7 @@ public class AbductionBeam : MonoBehaviour {
             var specialHumans = entities.OfType<SpecialHuman>();
 
             //should be a priority system but doesnt really work
+            
             if (specialHumans.Any())
             {
                 target = specialHumans.First();

@@ -4,16 +4,28 @@ using UnityEngine;
 
 public class HumanSpawner : MonoBehaviour {
 
+    int spawnAmount = 10;
+
+    private void Awake()
+    {
+        for (int i = 0; i < spawnAmount; i++)
+        {
+            Spawn();
+        }
+    }
+
     private void Start()
     {
-        InvokeRepeating("Spawn", 0, 2);
+
+        //InvokeRepeating("Spawn", 0, 2);
     }
 
     private void Spawn()
     {
         Human.HumanType type = ChooseType();
 
-        Instantiate(Resources.Load(type+ "Human"), transform.position, transform.rotation);
+        GameObject obj = Instantiate(Resources.Load(type+ "Human"), transform.position, transform.rotation) as GameObject;
+        obj.transform.SetParent(this.transform);
     }
 
     private Human.HumanType ChooseType()

@@ -9,6 +9,15 @@ public class Entity : MonoBehaviour, IDamageable{
 
     public bool GettingAbducted { get; set; }
 
+    protected virtual void Update()
+    {
+        if(CurrentPower <= 0)
+        {
+            print("dying");
+            Die();
+        }
+    }
+
     public virtual void Die()
     {
         Destroy(this.gameObject);

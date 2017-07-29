@@ -35,18 +35,21 @@ public class Player : Entity {
     // Use this for initialization
     void Start ()
     {
-        MaxPower = 100;
+        MaxPower = 1000;
         CurrentPower = MaxPower;
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	protected override void Update ()
     {
+        base.Update();
 
+        //print("player power: " + CurrentPower);
         transform.position = new Vector2(Mathf.Clamp(transform.position.x, leftWall.position.x + 2, rightWall.position.x - 2),transform.position.y);
 
-        if (Input.GetKeyDown(abductKey) && rb.velocity == Vector2.zero && !beam.Abducting)
+        if (Input.GetKeyDown(abductKey) && !beam.Abducting)
         {
+            rb.velocity = Vector2.zero;
             beam.Abduct();
         }
         else if (Input.GetKeyUp(abductKey))

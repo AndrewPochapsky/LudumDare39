@@ -32,15 +32,12 @@ public class ArmyHuman : Human {
 
         player = GameObject.FindObjectOfType<Player>();
 
-        MaxPower = 5;
+        MaxPower = 20;
         CurrentPower = MaxPower;
         Speed = 2.5f;
     }
 
-    private void Update()
-    {
-        
-    }
+   
     private void LateUpdate()
     {
         DirectionRelatingToPlayer();
