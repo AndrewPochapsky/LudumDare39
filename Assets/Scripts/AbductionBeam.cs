@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AbductionBeam : MonoBehaviour {
@@ -32,10 +33,7 @@ public class AbductionBeam : MonoBehaviour {
 
     private void Update()
     {
-        if (Abducting)
-        {
-            print("abducting");
-        }
+        print("target: " + target);
     }
 
     public void Abduct()
@@ -92,9 +90,37 @@ public class AbductionBeam : MonoBehaviour {
     {
         //print(collision.name);
 
-        if (collision.GetComponent<Entity>() && target == null)
+
+
+        if (collision.GetComponent<Entity>())
         {
-            target = collision.GetComponent<Entity>();
+            Entity[] entities = collision.GetComponents<Entity>();
+
+            var scraps = entities.OfType<Scrap>();
+            var armyHumans = entities.OfType<ArmyHuman>();
+            var regularHumans = entities.OfType<RegularHuman>();
+            var specialHumans = entities.OfType<SpecialHuman>();
+
+            //should be a priority system but doesnt really work
+            if (specialHumans.Any())
+            {
+                target = specialHumans.First();
+            }
+            else if (scraps.Any() && target==null)
+            {
+                target = scraps.First();
+            }
+            else if (armyHumans.Any() && target == null)
+            {
+                target = armyHumans.First();
+            }
+            else if (regularHumans.Any() && target == null)
+            {
+                target = regularHumans.First();
+            }
+            
+
+            //target = collision.GetComponent<Entity>();
         }
     }
     /*

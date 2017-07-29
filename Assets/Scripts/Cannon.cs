@@ -12,10 +12,6 @@ public class Cannon : MonoBehaviour {
     public float fireRate, minDistance;
     private float nextFire;
 
-
-
-
-
 	// Use this for initialization
 	void Start () {
         target = GameObject.FindObjectOfType<Player>(); 

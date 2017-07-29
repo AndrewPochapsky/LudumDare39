@@ -19,10 +19,9 @@ public class BeamEnd : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        print(collision.name);
         if (player.beam.Abducting)
         {
-            Human entity = collision.GetComponent<Human>();
+            Entity entity = collision.GetComponent<Entity>();
             player.IncreasePower(entity.MaxPower);
             entity.Die();
         }

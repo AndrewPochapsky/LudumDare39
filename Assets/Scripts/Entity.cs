@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Entity : MonoBehaviour{
+public class Entity : MonoBehaviour, IDamageable{
 
     public float MaxPower { get; protected set; }
     public float CurrentPower { get; protected set; }

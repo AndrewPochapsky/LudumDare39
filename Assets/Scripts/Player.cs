@@ -8,11 +8,17 @@ public class Player : Entity {
     public float thrust;
     public Vector2 maxVelocity;
 
+    public float fireRate;
+    private float nextFire;
+
+    [SerializeField]
+    private Transform exit;
+
     Transform leftWall, rightWall;
 
     private KeyCode abductKey = KeyCode.Space;
     
-
+    [HideInInspector]
     public AbductionBeam beam;
 
     private KeyCode? previousMovementKey = null;
@@ -34,7 +40,8 @@ public class Player : Entity {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 
         transform.position = new Vector2(Mathf.Clamp(transform.position.x, leftWall.position.x + 2, rightWall.position.x - 2),transform.position.y);
 
@@ -48,8 +55,13 @@ public class Player : Entity {
         }
 
         DrainPowerOverTime();
-        //print("Power: " + CurrentPower);
-	}
+
+        if (Input.GetMouseButton(0))
+        {
+            Fire();
+        }
+
+    }
     private void FixedUpdate()
     {
         if (!beam.Abducting)
@@ -164,6 +176,14 @@ public class Player : Entity {
         }
     }
 
+    private void Fire()
+    {
+        if(Time.time > nextFire)
+        {
+            Instantiate(Resources.Load("Laser"), exit.position, exit.rotation);
+            nextFire = Time.time + fireRate;
+        }
+    }
 
 
 }
