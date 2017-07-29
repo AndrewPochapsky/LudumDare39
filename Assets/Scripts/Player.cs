@@ -39,6 +39,9 @@ public class Player : Entity {
         {
             beam.StopAbduct();
         }
+
+        //DrainPowerOverTime();
+        print("Power: " + CurrentPower);
 	}
     private void FixedUpdate()
     {
@@ -125,5 +128,31 @@ public class Player : Entity {
         return (Mathf.Abs(rb.velocity.x) > maxVelocity.x);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(beam.Abducting && collision.GetComponent<Human>())
+        {
+            Human entity = collision.GetComponent<Human>();
+            IncreasePower(entity.MaxPower);
+            entity.Die();
+        }
+    }
+
+    void IncreasePower(float power)
+    {
+        CurrentPower += power;
+        if(CurrentPower > MaxPower)
+        {
+            float diff = CurrentPower - MaxPower;
+            CurrentPower -= diff;
+        }
+    }
+
+    private void DrainPowerOverTime()
+    {
+        CurrentPower -= 0.5f * Time.deltaTime;
+    }
+
+   
 
 }

@@ -51,6 +51,7 @@ public class AbductionBeam : MonoBehaviour {
             targetRb.isKinematic = true;
 
             targetRb.velocity = new Vector2(0, abductionSpeed);
+            target.GettingAbducted = true;
         }
        
 
@@ -69,6 +70,8 @@ public class AbductionBeam : MonoBehaviour {
             targetRb.isKinematic = false;
 
             targetRb.velocity = Vector2.zero;
+
+            target.GettingAbducted = false;
         }
 
 
@@ -95,6 +98,7 @@ public class AbductionBeam : MonoBehaviour {
 
             if (target.Equals(entity))
             {
+                target.GettingAbducted = false;
                 target = null;
             }
         }
