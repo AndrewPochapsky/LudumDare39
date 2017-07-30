@@ -18,7 +18,7 @@ public class MissileLauncher : MonoBehaviour, IDamageable {
 
     // Use this for initialization
     void Start () {
-        _maxPower = 30;
+        _maxPower = 60;
         _currentPower = _maxPower;
     }
 	

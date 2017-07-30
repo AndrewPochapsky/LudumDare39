@@ -10,13 +10,15 @@ public class UIController : MonoBehaviour {
 
     public TextMeshProUGUI powerText, numRegText, numArmyText, numSpecText;
 
-    public Transform pausePanel;
+    public Transform pausePanel, introPanel;
 
     Player player;
 
 	// Use this for initialization
 	void Start () {
         player = GameObject.FindObjectOfType<Player>();
+        ManageIntro();
+
 	}
 	
 	// Update is called once per frame
@@ -56,6 +58,15 @@ public class UIController : MonoBehaviour {
             Time.timeScale = 0;
     }
 
+    public void ManageIntro()
+    {
+
+        introPanel.gameObject.SetActive(!introPanel.gameObject.activeSelf);
+        if (Time.timeScale == 0)
+            Time.timeScale = 1;
+        else
+            Time.timeScale = 0;
+    }
 
 }
 
