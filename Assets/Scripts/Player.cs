@@ -11,7 +11,7 @@ public class Player : Entity {
 
     public float fireRate;
     private float nextFire;
-    private float damage = 4;
+    private float damage = 8;
 
     [SerializeField]
     private Transform exit;
