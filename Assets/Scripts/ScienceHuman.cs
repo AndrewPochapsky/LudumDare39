@@ -16,7 +16,7 @@ public class ScienceHuman : Human {
 
     public override void Die()
     {
-        GameManager.numSpec++;
+
         base.Die();
     }
 }

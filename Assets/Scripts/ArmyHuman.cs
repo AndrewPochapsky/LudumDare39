@@ -83,7 +83,7 @@ public class ArmyHuman : Human {
 
     public override void Die()
     {
-        GameManager.numArmy++;
+ 
         base.Die();
     }
 

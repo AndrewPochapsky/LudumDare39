@@ -17,7 +17,7 @@ public class RegularHuman : Human {
 
     public override void Die()
     {
-        GameManager.numReg++;
+
         base.Die();
     }
 
