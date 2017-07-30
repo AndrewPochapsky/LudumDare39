@@ -30,7 +30,7 @@ public class BeamEnd : MonoBehaviour {
             else if(entity is ArmyHuman)
             {
                 player.IncreasePower(entity.MaxPower, 0);
-                player.IncreaseDamage(0.25f);
+                player.IncreaseDamage(0.5f);
             }
             else if(entity is ScienceHuman)
             {

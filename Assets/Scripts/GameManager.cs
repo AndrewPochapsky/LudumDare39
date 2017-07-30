@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     public static int numReg, numArmy, numSpec;
-
+    public static float finalMaxPower, finalDamage;
 
 	// Use this for initialization
 	void Start () {

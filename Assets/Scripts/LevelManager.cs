@@ -11,13 +11,17 @@ public class LevelManager : MonoBehaviour {
     public Slider slider;
     public TextMeshProUGUI percent;
 
+    
+
     public void LoadLevel(string level)
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(level);
     }
 
     public void LoadLevelASync(string level)
     {
+        Time.timeScale = 1;
         StartCoroutine(LoadAsync(level));
 
     }

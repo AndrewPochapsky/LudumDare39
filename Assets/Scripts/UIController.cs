@@ -10,6 +10,8 @@ public class UIController : MonoBehaviour {
 
     public TextMeshProUGUI powerText, numRegText, numArmyText, numSpecText;
 
+    public Transform pausePanel;
+
     Player player;
 
 	// Use this for initialization
@@ -23,6 +25,12 @@ public class UIController : MonoBehaviour {
         ManageAbductInfoUI();
 
         ManagePowerUI();
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseGame();
+        }
+
 	}
 
     private void ManagePowerUI()
@@ -38,6 +46,16 @@ public class UIController : MonoBehaviour {
         numArmyText.text = "Army: "+ GameManager.numArmy.ToString();
         numSpecText.text = "Science: "+ GameManager.numSpec.ToString();
     }
+
+    public void PauseGame()
+    {
+        pausePanel.gameObject.SetActive(!pausePanel.gameObject.activeSelf);
+        if (Time.timeScale == 0)
+            Time.timeScale = 1;
+        else
+            Time.timeScale = 0;
+    }
+
 
 }
 

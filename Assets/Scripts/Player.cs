@@ -6,7 +6,8 @@ public class Player : Entity {
 
     Rigidbody2D rb;
     public float thrust;
-    public Vector2 maxVelocity;
+    [SerializeField]
+    private Vector2 maxVelocity;
 
     public float fireRate;
     private float nextFire;
@@ -36,7 +37,8 @@ public class Player : Entity {
     // Use this for initialization
     void Start ()
     {
-        MaxPower = 1000;
+        //default is 1000
+        MaxPower = 50;
         CurrentPower = MaxPower;
 	}
 	
@@ -191,12 +193,22 @@ public class Player : Entity {
     {
         if(Time.time > nextFire)
         {
-            Laser laser = Instantiate(Resources.Load("Laser"), exit.position, exit.rotation) as Laser;
+            GameObject laser = Instantiate(Resources.Load("Laser"), exit.position, exit.rotation) as GameObject;
 
-            laser.Damage = damage;
+            laser.GetComponent<Laser>().Damage = damage;
 
             nextFire = Time.time + fireRate;
         }
+    }
+
+    public override void Die()
+    {
+        GameManager.finalDamage = damage;
+        GameManager.finalMaxPower = MaxPower;
+
+        GameObject.FindObjectOfType<LevelManager>().LoadLevel("End");
+
+        base.Die();
     }
 
 
