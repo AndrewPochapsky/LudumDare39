@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpecialHuman : Human {
+public class ScienceHuman : Human {
 
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
 
-        MaxPower = 5;
+        MaxPower = 50;
         CurrentPower = MaxPower;
         Speed = 6f;
+    }
+
+    public override void Die()
+    {
+        GameManager.numSpec++;
+        base.Die();
     }
 }

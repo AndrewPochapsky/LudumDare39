@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Human : Entity {
 
-    public enum HumanType { Regular, Special, Army }
+    public enum HumanType { Regular, Science, Army }
 
     public float Speed { get; protected set; }
 

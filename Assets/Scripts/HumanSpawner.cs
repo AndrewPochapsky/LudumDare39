@@ -6,9 +6,17 @@ public class HumanSpawner : MonoBehaviour {
 
     int spawnAmount = 10;
 
+    public int SpawnAmount
+    {
+        get
+        {
+            return spawnAmount;
+        }
+    }
+
     private void Awake()
     {
-        for (int i = 0; i < spawnAmount; i++)
+        for (int i = 0; i < SpawnAmount; i++)
         {
             Spawn();
         }
@@ -20,7 +28,7 @@ public class HumanSpawner : MonoBehaviour {
         //InvokeRepeating("Spawn", 0, 2);
     }
 
-    private void Spawn()
+    public void Spawn()
     {
         Human.HumanType type = ChooseType();
 
@@ -30,12 +38,12 @@ public class HumanSpawner : MonoBehaviour {
 
     private Human.HumanType ChooseType()
     {
-        int randomNum = Random.Range(1, 11);
-        if (randomNum == 10)
+        int randomNum = Random.Range(1, 16);
+        if (randomNum == 15)
         {
-            return Human.HumanType.Special;
+            return Human.HumanType.Science;
         }
-        else if(randomNum >= 7)
+        else if(randomNum >= 13)
         {
             return Human.HumanType.Army;
         }

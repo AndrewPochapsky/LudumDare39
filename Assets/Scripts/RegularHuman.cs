@@ -12,6 +12,11 @@ public class RegularHuman : Human {
         CurrentPower = MaxPower;
         Speed = 5f;
 	}
-	
-	
+
+    public override void Die()
+    {
+        GameManager.numReg++;
+        base.Die();
+    }
+
 }

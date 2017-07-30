@@ -5,10 +5,23 @@ using UnityEngine;
 public class Laser : MonoBehaviour {
 
     public float speed = 5;
-    public float damage = 4;
+    private float damage;
 
-	// Use this for initialization
-	void Start () {
+    public float Damage
+    {
+        get
+        {
+            return damage;
+        }
+
+        set
+        {
+            damage = value;
+        }
+    }
+
+    // Use this for initialization
+    void Start () {
         SetRotation();
 	}
 	
@@ -16,6 +29,7 @@ public class Laser : MonoBehaviour {
 	void Update () {
         transform.Translate(Vector2.up * speed * Time.deltaTime);
     }
+
 
 
     private void SetRotation()
@@ -36,7 +50,7 @@ public class Laser : MonoBehaviour {
             if (mb is IDamageable)
             {
                 IDamageable damageable = (IDamageable)mb;
-                damageable.DealDamage(damage);
+                damageable.DealDamage(Damage);
             }
         }
         Destroy(gameObject);

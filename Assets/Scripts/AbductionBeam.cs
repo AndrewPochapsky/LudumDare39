@@ -99,7 +99,7 @@ public class AbductionBeam : MonoBehaviour {
             var scraps = entities.OfType<Scrap>();
             var armyHumans = entities.OfType<ArmyHuman>();
             var regularHumans = entities.OfType<RegularHuman>();
-            var specialHumans = entities.OfType<SpecialHuman>();
+            var specialHumans = entities.OfType<ScienceHuman>();
 
             //should be a priority system but doesnt really work
             
@@ -124,7 +124,7 @@ public class AbductionBeam : MonoBehaviour {
             //target = collision.GetComponent<Entity>();
         }
     }
-    /*
+    
     private void OnTriggerExit2D(Collider2D collision)
     {
         //print(collision.name);
@@ -139,7 +139,7 @@ public class AbductionBeam : MonoBehaviour {
                 target = null;
             }
         }
-    }*/
+    }
 
 
 }

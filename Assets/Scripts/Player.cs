@@ -10,6 +10,7 @@ public class Player : Entity {
 
     public float fireRate;
     private float nextFire;
+    private float damage = 4;
 
     [SerializeField]
     private Transform exit;
@@ -75,6 +76,11 @@ public class Player : Entity {
         //print("velocity: " + rb.velocity);
         
 
+    }
+
+    public void IncreaseDamage(float value)
+    {
+        damage += value;
     }
 
     protected void Move()
@@ -151,10 +157,12 @@ public class Player : Entity {
     }
     
 
-    public void IncreasePower(float power)
+    public void IncreasePower(float currentPower, float maxPower)
     {
-        CurrentPower += power;
-        print("increasing power");
+        CurrentPower += currentPower;
+
+        MaxPower += maxPower;
+
         if(CurrentPower > MaxPower)
         {
             float diff = CurrentPower - MaxPower;
@@ -183,7 +191,10 @@ public class Player : Entity {
     {
         if(Time.time > nextFire)
         {
-            Instantiate(Resources.Load("Laser"), exit.position, exit.rotation);
+            Laser laser = Instantiate(Resources.Load("Laser"), exit.position, exit.rotation) as Laser;
+
+            laser.Damage = damage;
+
             nextFire = Time.time + fireRate;
         }
     }

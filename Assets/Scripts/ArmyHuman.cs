@@ -32,7 +32,7 @@ public class ArmyHuman : Human {
 
         player = GameObject.FindObjectOfType<Player>();
 
-        MaxPower = 20;
+        MaxPower = 25;
         CurrentPower = MaxPower;
         Speed = 2.5f;
     }
@@ -79,6 +79,12 @@ public class ArmyHuman : Human {
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
+    }
+
+    public override void Die()
+    {
+        GameManager.numArmy++;
+        base.Die();
     }
 
 }

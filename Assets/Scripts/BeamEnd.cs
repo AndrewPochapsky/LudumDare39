@@ -22,7 +22,23 @@ public class BeamEnd : MonoBehaviour {
         if (player.beam.Abducting)
         {
             Entity entity = collision.GetComponent<Entity>();
-            player.IncreasePower(entity.MaxPower);
+
+            if(entity is RegularHuman)
+            {
+                player.IncreasePower(entity.MaxPower, 0);
+            }
+            else if(entity is ArmyHuman)
+            {
+                player.IncreasePower(entity.MaxPower, 0);
+                player.IncreaseDamage(0.25f);
+            }
+            else if(entity is ScienceHuman)
+            {
+                player.IncreasePower(entity.MaxPower, entity.MaxPower/2);
+
+            }
+
+           
             entity.Die();
         }
     }
