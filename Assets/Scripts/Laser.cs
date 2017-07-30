@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Laser : MonoBehaviour {
 
-    public float speed = 5;
+    public float speed = 10;
     private float damage;
 
     public float Damage
@@ -50,7 +50,10 @@ public class Laser : MonoBehaviour {
             if (mb is IDamageable)
             {
                 IDamageable damageable = (IDamageable)mb;
-                damageable.DealDamage(Damage);
+                if (mb is ScienceHuman || mb is RegularHuman)
+                    damageable.DealDamage(Damage * 100);
+                else
+                    damageable.DealDamage(Damage * 2);
             }
         }
         Destroy(gameObject);

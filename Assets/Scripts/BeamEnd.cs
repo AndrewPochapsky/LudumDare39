@@ -35,11 +35,17 @@ public class BeamEnd : MonoBehaviour {
             else if(entity is ScienceHuman)
             {
                 player.IncreasePower(entity.MaxPower, entity.MaxPower/2);
-
+            }
+            else if(entity is Scrap)
+            {
+                GameManager.numScrap++;
+                player.IncreasePower(entity.MaxPower, maxPower: 0);
+                player.IncreaseSpeed(1.5f);
             }
 
            
             entity.Die();
+            Destroy(entity.gameObject);
         }
     }
 

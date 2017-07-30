@@ -10,14 +10,21 @@ public class Human : Entity {
 
     public HumanType Type { get; protected set; }
 
+    
+
     protected Rigidbody2D rb;
 
     Vector3 direction;
+
+    protected Animator anim;
+
+   
 
     protected bool isGrounded = false;
 
     protected virtual void Start()
     {
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
 
         InvokeRepeating("ChooseDirection", 0, 1);
@@ -67,6 +74,18 @@ public class Human : Entity {
         {
             isGrounded = false;
         }
+    }
+
+    public override void Die()
+    {
+        anim.SetBool("Dead", true);
+        Dead = true;
+        rb.isKinematic = true;
+        GetComponent<BoxCollider2D>().enabled = false;
+        transform.position = new Vector3(transform.position.x, transform.position.y-2f, 0);
+        GetComponent<Human>().enabled = false;
+
+        //base.Die();
     }
 
 }

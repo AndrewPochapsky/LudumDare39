@@ -9,6 +9,8 @@ public class Entity : MonoBehaviour, IDamageable{
 
     public bool GettingAbducted { get; set; }
 
+    public bool Dead { get; protected set; }
+
     protected virtual void Update()
     {
         if(CurrentPower <= 0)

@@ -15,4 +15,7 @@ public class Scrap : Entity {
 	void Update () {
 		
 	}
+
+
+
 }

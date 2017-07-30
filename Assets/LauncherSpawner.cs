@@ -32,6 +32,8 @@ public class LauncherSpawner : MonoBehaviour {
 
         obj.transform.SetParent(this.transform);
 
+        obj.transform.localPosition = new Vector3(0, 2.72f, 0);
+
         spawning = false;
     }
 

@@ -27,16 +27,20 @@ public class Gun : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         LookAtPlayer();
-        if (!humanParent.GetComponent<ArmyHuman>().GettingAbducted)
+        //TODO refactor this gross stuff
+        if (!humanParent.GetComponent<ArmyHuman>().GettingAbducted && !humanParent.GetComponent<ArmyHuman>().Dead)
         {
+            Animator parentAnim = humanParent.gameObject.GetComponent<Animator>();
             if (humanParent.GetComponent<ArmyHuman>().Firing && !attacking)
             {
+                parentAnim.SetBool("isFiring", true);
                 StartCoroutine(Fire(target.GetComponent<Entity>()));
                 blast.gameObject.SetActive(true);
             }
             else if (!humanParent.GetComponent<ArmyHuman>().Firing)
             {
                 StopAllCoroutines();
+                parentAnim.SetBool("isFiring", false);
                 blast.gameObject.SetActive(false);
                 attacking = false;
             }
@@ -55,12 +59,12 @@ public class Gun : MonoBehaviour {
         if (humanParent.eulerAngles.y == 0)
         {
             sp.sprite = gun1Main;
-            blast.localPosition = new Vector2(-3.85f, 0.7f);
+            blast.localPosition = new Vector2(-2.79f, 0.487f);
         }
         else if(humanParent.eulerAngles.y==180)
         {
             sp.sprite = gun2Main;
-            blast.localPosition = new Vector2(3.85f, 0.7f);
+            blast.localPosition = new Vector2(2.79f, 0.487f);
 
         }
 
@@ -73,7 +77,7 @@ public class Gun : MonoBehaviour {
     private IEnumerator Fire(Entity target)
     {
         attacking = true;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         target.DealDamage(damage);
         StartCoroutine(Fire(target));
 

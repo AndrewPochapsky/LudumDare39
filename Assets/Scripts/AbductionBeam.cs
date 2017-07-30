@@ -94,7 +94,15 @@ public class AbductionBeam : MonoBehaviour {
 
         if (collision.GetComponent<Entity>())
         {
-            Entity[] entities = collision.GetComponents<Entity>();
+            List<Entity> entities = new List<Entity>();
+            foreach (Entity entity in collision.GetComponents<Entity>())
+            {
+                if (!entity.Dead)
+                {
+                    entities.Add(entity);
+                }
+            }
+           
 
             var scraps = entities.OfType<Scrap>();
             var armyHumans = entities.OfType<ArmyHuman>();

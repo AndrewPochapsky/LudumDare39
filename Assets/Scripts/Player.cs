@@ -38,7 +38,7 @@ public class Player : Entity {
     void Start ()
     {
         //default is 1000
-        MaxPower = 50;
+        MaxPower = 500;
         CurrentPower = MaxPower;
 	}
 	
@@ -83,6 +83,12 @@ public class Player : Entity {
     public void IncreaseDamage(float value)
     {
         damage += value;
+    }
+
+    public void IncreaseSpeed(float value)
+    {
+        maxVelocity += new Vector2(value, value);
+        print("new speed: " + maxVelocity);
     }
 
     protected void Move()
