@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HumanSpawner : MonoBehaviour {
 
-    int spawnAmount = 10;
+    int spawnAmount = 15;
 
     public int SpawnAmount
     {
@@ -43,7 +43,7 @@ public class HumanSpawner : MonoBehaviour {
         {
             return Human.HumanType.Science;
         }
-        else if(randomNum >= 13)
+        else if(randomNum >= 11)
         {
             return Human.HumanType.Army;
         }

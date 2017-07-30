@@ -8,7 +8,7 @@ public class UIController : MonoBehaviour {
 
     public Transform powerBar;
 
-    public TextMeshProUGUI powerText, numRegText, numArmyText, numSpecText;
+    public TextMeshProUGUI powerText, numRegText, numArmyText, numSpecText, numScrapText;
 
     public Transform pausePanel, introPanel;
 
@@ -44,9 +44,10 @@ public class UIController : MonoBehaviour {
 
     private void ManageAbductInfoUI()
     {
-        numRegText.text = "Regular: "+GameManager.numReg.ToString();
-        numArmyText.text = "Army: "+ GameManager.numArmy.ToString();
-        numSpecText.text = "Science: "+ GameManager.numSpec.ToString();
+        numRegText.text = GameManager.numReg.ToString();
+        numArmyText.text = GameManager.numArmy.ToString();
+        numSpecText.text = GameManager.numSpec.ToString();
+        numScrapText.text = GameManager.numScrap.ToString();
     }
 
     public void PauseGame()

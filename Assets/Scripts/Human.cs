@@ -10,6 +10,7 @@ public class Human : Entity {
 
     public HumanType Type { get; protected set; }
 
+    protected AudioSource audioSource;
     
 
     protected Rigidbody2D rb;
@@ -26,6 +27,7 @@ public class Human : Entity {
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
 
         InvokeRepeating("ChooseDirection", 0, 1);
     }
@@ -80,9 +82,16 @@ public class Human : Entity {
     {
         anim.SetBool("Dead", true);
         Dead = true;
+
         rb.isKinematic = true;
         GetComponent<BoxCollider2D>().enabled = false;
+
         transform.position = new Vector3(transform.position.x, transform.position.y-2f, 0);
+
+        GameManager.numKilled++;
+
+        audioSource.Play();
+
         GetComponent<Human>().enabled = false;
 
         //base.Die();

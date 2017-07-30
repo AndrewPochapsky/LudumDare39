@@ -13,6 +13,7 @@ public class AbductionBeam : MonoBehaviour {
     private bool _abducting = false;
 
     private SpriteRenderer sp;
+    private AudioSource audioSource;
     private BoxCollider2D boxCol;
 
     public bool Abducting {
@@ -26,6 +27,7 @@ public class AbductionBeam : MonoBehaviour {
     {
         sp = GetComponent<SpriteRenderer>();
         boxCol = GetComponent<BoxCollider2D>();
+        audioSource = GetComponent<AudioSource>();
 
         sp.enabled = false;
         //boxCol.enabled = false;
@@ -34,16 +36,13 @@ public class AbductionBeam : MonoBehaviour {
     private void Update()
     {
         print("target: " + target);
+        LiftUpTarget();
+
     }
 
-    public void Abduct()
+    private void LiftUpTarget()
     {
-        _abducting = true;
-
-        //boxCol.enabled = true;
-        sp.enabled = true;
-
-        if(target != null)
+        if (target != null && _abducting)
         {
             Rigidbody2D targetRb = target.GetComponent<Rigidbody2D>();
 
@@ -57,15 +56,21 @@ public class AbductionBeam : MonoBehaviour {
 
             //boxCol.enabled = false;
         }
-       
+    }
 
+    public void Abduct()
+    {
+        _abducting = true;
+        audioSource.Play();
+        //boxCol.enabled = true;
+        sp.enabled = true;
     }
 
     public void StopAbduct()
     {
         //boxCol.enabled = false;
         sp.enabled = false;
-
+        audioSource.Stop();
         if (target != null)
         {
             Rigidbody2D targetRb = target.GetComponent<Rigidbody2D>();
@@ -111,7 +116,7 @@ public class AbductionBeam : MonoBehaviour {
 
             //should be a priority system but doesnt really work
             
-            if (specialHumans.Any())
+            if (specialHumans.Any() && target == null)
             {
                 target = specialHumans.First();
             }
@@ -127,6 +132,7 @@ public class AbductionBeam : MonoBehaviour {
             {
                 target = regularHumans.First();
             }
+
             
 
             //target = collision.GetComponent<Entity>();

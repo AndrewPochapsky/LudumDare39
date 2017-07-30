@@ -13,6 +13,8 @@ public class Player : Entity {
     private float nextFire;
     private float damage = 8;
 
+    private AudioSource audioSource;
+
     [SerializeField]
     private Transform exit;
 
@@ -29,6 +31,7 @@ public class Player : Entity {
     {
         rb = GetComponent<Rigidbody2D>();
         beam = transform.GetChild(0).GetComponent<AbductionBeam>();
+        audioSource = GetComponent<AudioSource>();
 
         rightWall = GameObject.FindGameObjectWithTag("RightWall").transform;
         leftWall = GameObject.FindGameObjectWithTag("LeftWall").transform;
@@ -62,7 +65,7 @@ public class Player : Entity {
 
         DrainPowerOverTime();
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !beam.Abducting)
         {
             Fire();
         }
@@ -180,7 +183,7 @@ public class Player : Entity {
 
     private void DrainPowerOverTime()
     {
-        CurrentPower -= 0.5f * Time.deltaTime;
+        CurrentPower -= 0.75f * Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -200,6 +203,8 @@ public class Player : Entity {
         if(Time.time > nextFire)
         {
             GameObject laser = Instantiate(Resources.Load("Laser"), exit.position, exit.rotation) as GameObject;
+
+            audioSource.Play();
 
             laser.GetComponent<Laser>().Damage = damage;
 

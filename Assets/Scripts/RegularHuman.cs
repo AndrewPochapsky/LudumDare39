@@ -10,7 +10,7 @@ public class RegularHuman : Human {
 	protected override void Start () {
         base.Start();
 
-        MaxPower = 15;
+        MaxPower = 8;
         CurrentPower = MaxPower;
         Speed = 5f;
 	}

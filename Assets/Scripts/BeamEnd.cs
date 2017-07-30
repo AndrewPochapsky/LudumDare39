@@ -6,9 +6,12 @@ public class BeamEnd : MonoBehaviour {
 
     private Player player;
 
+    AudioSource audioSource;
+
 	// Use this for initialization
 	void Start () {
         player = GameObject.FindObjectOfType<Player>();
+        audioSource = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -43,7 +46,7 @@ public class BeamEnd : MonoBehaviour {
                 player.IncreaseSpeed(1.5f);
             }
 
-           
+            audioSource.Play();
             entity.Die();
             Destroy(entity.gameObject);
         }
