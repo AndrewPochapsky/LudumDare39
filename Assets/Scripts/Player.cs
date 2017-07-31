@@ -6,12 +6,28 @@ public class Player : Entity {
 
     Rigidbody2D rb;
     public float thrust;
-    public Vector2 maxVelocity;
+    [SerializeField]
+    private Vector2 maxVelocity;
+
+    public float fireRate;
+    private float nextFire;
+    private float damage = 8;
+
+    private AudioSource audioSource;
+
+    private Animator anim;
+
+    public AudioClip deadClip;
+
+    [SerializeField]
+    private Transform exit;
+
+    Transform leftWall, rightWall;
 
     private KeyCode abductKey = KeyCode.Space;
     
-
-    private AbductionBeam beam;
+    [HideInInspector]
+    public AbductionBeam beam;
 
     private KeyCode? previousMovementKey = null;
 
@@ -19,30 +35,54 @@ public class Player : Entity {
     {
         rb = GetComponent<Rigidbody2D>();
         beam = transform.GetChild(0).GetComponent<AbductionBeam>();
+        audioSource = GetComponent<AudioSource>();
+        anim = GetComponent<Animator>();
+
+        rightWall = GameObject.FindGameObjectWithTag("RightWall").transform;
+        leftWall = GameObject.FindGameObjectWithTag("LeftWall").transform;
     }
 
     // Use this for initialization
     void Start ()
     {
-        MaxPower = 100;
+        //default is 1000
+        MaxPower = 1000;
         CurrentPower = MaxPower;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	protected override void Update ()
+    {
+        base.Update();
 
-        if (Input.GetKeyDown(abductKey) && rb.velocity == Vector2.zero && !beam.Abducting)
+        //print("player power: " + CurrentPower);
+       
+        if (!Dead)
         {
-            beam.Abduct();
+            transform.position = new Vector2(Mathf.Clamp(transform.position.x, leftWall.position.x + 2, rightWall.position.x - 2), transform.position.y);
+            if (Input.GetKeyDown(abductKey) && !beam.Abducting)
+            {
+                rb.velocity = Vector2.zero;
+                beam.Abduct();
+            }
+            else if (Input.GetKeyUp(abductKey))
+            {
+                beam.StopAbduct();
+            }
+
+            DrainPowerOverTime();
+
+            if (Input.GetMouseButton(0) && !beam.Abducting)
+            {
+                Fire();
+            }
         }
-        else if (Input.GetKeyUp(abductKey))
-        {
-            beam.StopAbduct();
-        }
-	}
+       
+
+    }
     private void FixedUpdate()
     {
-        if (!beam.Abducting)
+        if (!beam.Abducting && !Dead)
         {
             Move();
         }
@@ -50,6 +90,17 @@ public class Player : Entity {
         //print("velocity: " + rb.velocity);
         
 
+    }
+
+    public void IncreaseDamage(float value)
+    {
+        damage += value;
+    }
+
+    public void IncreaseSpeed(float value)
+    {
+        maxVelocity += new Vector2(value, value);
+        print("new speed: " + maxVelocity);
     }
 
     protected void Move()
@@ -123,6 +174,78 @@ public class Player : Entity {
     private bool ExceedsMaxVelocity()
     {
         return (Mathf.Abs(rb.velocity.x) > maxVelocity.x);
+    }
+    
+
+    public void IncreasePower(float currentPower, float maxPower)
+    {
+        CurrentPower += currentPower;
+
+        MaxPower += maxPower;
+
+        if(CurrentPower > MaxPower)
+        {
+            float diff = CurrentPower - MaxPower;
+            CurrentPower -= diff;
+        }
+    }
+
+    private void DrainPowerOverTime()
+    {
+        CurrentPower -= 0.95f * Time.deltaTime;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponent<Missile>())
+        {
+            Missile missile = collision.GetComponent<Missile>();
+            print("hitting");
+            DealDamage(missile.damage);
+
+            Destroy(missile.gameObject);
+        }
+    }
+
+    private void Fire()
+    {
+        if(Time.time > nextFire)
+        {
+            GameObject laser = Instantiate(Resources.Load("Laser"), exit.position, exit.rotation) as GameObject;
+
+            audioSource.Play();
+
+            laser.GetComponent<Laser>().Damage = damage;
+
+            nextFire = Time.time + fireRate;
+        }
+    }
+
+    public override void Die()
+    {
+        Dead = true;
+
+        GameManager.finalDamage = damage;
+        GameManager.finalMaxPower = MaxPower;
+
+        audioSource.clip = deadClip;
+        audioSource.Play();
+
+        rb.gravityScale = 1;
+
+        
+
+        StartCoroutine(LoadEnd());
+
+        //base.Die();
+    }
+
+    private IEnumerator LoadEnd()
+    {
+        anim.SetBool("Dead", true);
+        yield return new WaitForSeconds(1.5f);
+        print("loading");
+        GameObject.FindObjectOfType<LevelManager>().LoadLevel("End");
     }
 
 

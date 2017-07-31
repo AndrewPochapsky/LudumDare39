@@ -5,13 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class MusicManager : MonoBehaviour {
 
-    AudioClip startClip, gameClip, endClip;
+    public AudioClip startClip, gameClip, endClip;
 
     AudioSource audioSource;
 
 	// Use this for initialization
 	void Start () {
         audioSource = GetComponent<AudioSource>();
+        ChooseClip();
 	}
 
     private void ChooseClip()
