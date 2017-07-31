@@ -22,7 +22,7 @@ public class BeamEnd : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (player.beam.Abducting && collision.GetComponent<Entity>())
+        if (collision.GetComponent<Entity>() && !player.Dead)
         {
             Entity entity = collision.GetComponent<Entity>();
 

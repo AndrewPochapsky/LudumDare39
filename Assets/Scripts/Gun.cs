@@ -10,6 +10,8 @@ public class Gun : MonoBehaviour {
     SpriteRenderer sp;
     Transform blast;
 
+    AudioSource audioSource;
+
     public float damage;
 
     bool attacking = false;
@@ -18,6 +20,7 @@ public class Gun : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        audioSource = GetComponent<AudioSource>();
         sp = GetComponent<SpriteRenderer>();
         target = GameObject.FindObjectOfType<Player>().transform;
         humanParent = transform.parent;
@@ -77,7 +80,8 @@ public class Gun : MonoBehaviour {
     private IEnumerator Fire(Entity target)
     {
         attacking = true;
-        yield return new WaitForSeconds(1);
+        audioSource.Play();
+        yield return new WaitForSeconds(1.5f);
         target.DealDamage(damage);
         StartCoroutine(Fire(target));
 

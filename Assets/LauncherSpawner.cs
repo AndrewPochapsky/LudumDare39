@@ -6,7 +6,7 @@ public class LauncherSpawner : MonoBehaviour {
 
     bool spawning = false;
 
-    float spawnTime = 20;
+    float spawnTime = 18;
 
     private void Awake()
     {

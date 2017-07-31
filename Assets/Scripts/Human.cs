@@ -6,6 +6,8 @@ public class Human : Entity {
 
     public enum HumanType { Regular, Science, Army }
 
+    int dir = -1;
+
     public float Speed { get; protected set; }
 
     public HumanType Type { get; protected set; }
@@ -29,7 +31,15 @@ public class Human : Entity {
         rb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
 
-        InvokeRepeating("ChooseDirection", 0, 1);
+        InvokeRepeating("ChooseDirection", 0, 2);
+    }
+
+    protected override void Update()
+    {
+        
+
+        if(!Dead)
+            base.Update();
     }
 
     protected virtual void FixedUpdate()
@@ -42,22 +52,24 @@ public class Human : Entity {
 
     protected virtual void Move()
     {
-         rb.MovePosition(transform.position + -transform.right * Speed * Time.deltaTime); 
+         rb.MovePosition(transform.position + (dir*transform.right)* Speed * Time.deltaTime); 
     }
 
     protected virtual void ChooseDirection()
     {
         int randNum = Random.Range(0, 2);
-
+       //Had to change this to dir since animation was locking rotation
         if(randNum == 0)
         {
-            //direction =  Vector3.right;
-            transform.rotation = Quaternion.Euler(0, 180, 0);
+            
+            //transform.rotation = Quaternion.Euler(0, 180, 0);
+            dir = -1;
         }
         else
         {
             //direction =  Vector3.left;
-            transform.rotation = Quaternion.Euler(0, 0, 0);
+            //transform.rotation = Quaternion.Euler(0, 0, 0);
+            dir = 1;
         }
 
     }
@@ -92,9 +104,17 @@ public class Human : Entity {
 
         audioSource.Play();
 
-        GetComponent<Human>().enabled = false;
+        StartCoroutine(Dispose());
+
+        //GetComponent<Human>().enabled = false;
 
         //base.Die();
+    }
+
+    IEnumerator Dispose()
+    {
+        yield return new WaitForSeconds(4);
+        Destroy(gameObject);
     }
 
 }

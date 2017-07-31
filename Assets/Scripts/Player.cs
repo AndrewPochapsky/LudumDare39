@@ -15,6 +15,10 @@ public class Player : Entity {
 
     private AudioSource audioSource;
 
+    private Animator anim;
+
+    public AudioClip deadClip;
+
     [SerializeField]
     private Transform exit;
 
@@ -32,6 +36,7 @@ public class Player : Entity {
         rb = GetComponent<Rigidbody2D>();
         beam = transform.GetChild(0).GetComponent<AbductionBeam>();
         audioSource = GetComponent<AudioSource>();
+        anim = GetComponent<Animator>();
 
         rightWall = GameObject.FindGameObjectWithTag("RightWall").transform;
         leftWall = GameObject.FindGameObjectWithTag("LeftWall").transform;
@@ -41,7 +46,7 @@ public class Player : Entity {
     void Start ()
     {
         //default is 1000
-        MaxPower = 500;
+        MaxPower = 1000;
         CurrentPower = MaxPower;
 	}
 	
@@ -51,29 +56,33 @@ public class Player : Entity {
         base.Update();
 
         //print("player power: " + CurrentPower);
-        transform.position = new Vector2(Mathf.Clamp(transform.position.x, leftWall.position.x + 2, rightWall.position.x - 2),transform.position.y);
-
-        if (Input.GetKeyDown(abductKey) && !beam.Abducting)
+       
+        if (!Dead)
         {
-            rb.velocity = Vector2.zero;
-            beam.Abduct();
-        }
-        else if (Input.GetKeyUp(abductKey))
-        {
-            beam.StopAbduct();
-        }
+            transform.position = new Vector2(Mathf.Clamp(transform.position.x, leftWall.position.x + 2, rightWall.position.x - 2), transform.position.y);
+            if (Input.GetKeyDown(abductKey) && !beam.Abducting)
+            {
+                rb.velocity = Vector2.zero;
+                beam.Abduct();
+            }
+            else if (Input.GetKeyUp(abductKey))
+            {
+                beam.StopAbduct();
+            }
 
-        DrainPowerOverTime();
+            DrainPowerOverTime();
 
-        if (Input.GetMouseButton(0) && !beam.Abducting)
-        {
-            Fire();
+            if (Input.GetMouseButton(0) && !beam.Abducting)
+            {
+                Fire();
+            }
         }
+       
 
     }
     private void FixedUpdate()
     {
-        if (!beam.Abducting)
+        if (!beam.Abducting && !Dead)
         {
             Move();
         }
@@ -183,7 +192,7 @@ public class Player : Entity {
 
     private void DrainPowerOverTime()
     {
-        CurrentPower -= 0.75f * Time.deltaTime;
+        CurrentPower -= 0.95f * Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -214,12 +223,29 @@ public class Player : Entity {
 
     public override void Die()
     {
+        Dead = true;
+
         GameManager.finalDamage = damage;
         GameManager.finalMaxPower = MaxPower;
 
-        GameObject.FindObjectOfType<LevelManager>().LoadLevel("End");
+        audioSource.clip = deadClip;
+        audioSource.Play();
 
-        base.Die();
+        rb.gravityScale = 1;
+
+        
+
+        StartCoroutine(LoadEnd());
+
+        //base.Die();
+    }
+
+    private IEnumerator LoadEnd()
+    {
+        anim.SetBool("Dead", true);
+        yield return new WaitForSeconds(1.5f);
+        print("loading");
+        GameObject.FindObjectOfType<LevelManager>().LoadLevel("End");
     }
 
 

@@ -27,5 +27,6 @@ public class HumanSpawnController : MonoBehaviour {
             print("spawning");
         }
 
+
 	}
 }
